@@ -1,95 +1,94 @@
-import java.util.Arrays;
-
 public class Main {
 
     // Service Class
-    static class BogieService {
+    static class BogieSearchService {
 
-        // Sort using Arrays.sort()
-        public void sortBogieNames(String[] bogies) {
-            Arrays.sort(bogies);
-        }
+        // Linear Search Method
+        public boolean searchBogie(String[] bogies, String key) {
 
-        // Display method
-        public void display(String[] bogies) {
-            System.out.println(Arrays.toString(bogies));
+            for (int i = 0; i < bogies.length; i++) {
+
+                if (bogies[i].equals(key)) {
+                    return true; // found
+                }
+            }
+
+            return false; // not found
         }
     }
 
     // ---------- TEST METHODS ----------
 
-    static void testSort_BasicAlphabeticalSorting() {
-        String[] arr = {"Sleeper","AC Chair","First Class","General","Luxury"};
-        BogieService service = new BogieService();
+    static void testSearch_BogieFound() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        BogieSearchService service = new BogieSearchService();
 
-        service.sortBogieNames(arr);
+        boolean result = service.searchBogie(arr, "BG309");
 
-        System.out.print("Basic Sorting: ");
-        service.display(arr);
-        // Expected: [AC Chair, First Class, General, Luxury, Sleeper]
+        System.out.println("Bogie Found Test: " + result); // true
     }
 
-    static void testSort_UnsortedInput() {
-        String[] arr = {"Luxury","General","Sleeper","AC Chair"};
-        BogieService service = new BogieService();
+    static void testSearch_BogieNotFound() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        BogieSearchService service = new BogieSearchService();
 
-        service.sortBogieNames(arr);
+        boolean result = service.searchBogie(arr, "BG999");
 
-        System.out.print("Unsorted Input: ");
-        service.display(arr);
+        System.out.println("Bogie Not Found Test: " + result); // false
     }
 
-    static void testSort_AlreadySortedArray() {
-        String[] arr = {"AC Chair","First Class","General"};
-        BogieService service = new BogieService();
+    static void testSearch_FirstElementMatch() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        BogieSearchService service = new BogieSearchService();
 
-        service.sortBogieNames(arr);
+        boolean result = service.searchBogie(arr, "BG101");
 
-        System.out.print("Already Sorted: ");
-        service.display(arr);
+        System.out.println("First Element Match: " + result); // true
     }
 
-    static void testSort_DuplicateBogieNames() {
-        String[] arr = {"Sleeper","AC Chair","Sleeper","General"};
-        BogieService service = new BogieService();
+    static void testSearch_LastElementMatch() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        BogieSearchService service = new BogieSearchService();
 
-        service.sortBogieNames(arr);
+        boolean result = service.searchBogie(arr, "BG550");
 
-        System.out.print("Duplicate Values: ");
-        service.display(arr);
+        System.out.println("Last Element Match: " + result); // true
     }
 
-    static void testSort_SingleElementArray() {
-        String[] arr = {"Sleeper"};
-        BogieService service = new BogieService();
+    static void testSearch_SingleElementArray() {
+        String[] arr = {"BG101"};
+        BogieSearchService service = new BogieSearchService();
 
-        service.sortBogieNames(arr);
+        boolean result = service.searchBogie(arr, "BG101");
 
-        System.out.print("Single Element: ");
-        service.display(arr);
+        System.out.println("Single Element Test: " + result); // true
     }
 
     // ---------- MAIN METHOD ----------
     public static void main(String[] args) {
 
-        BogieService service = new BogieService();
+        BogieSearchService service = new BogieSearchService();
 
-        String[] bogies = {"Sleeper","AC Chair","First Class","General","Luxury"};
+        String[] bogies = {"BG101","BG205","BG309","BG412","BG550"};
 
-        System.out.println("Before Sorting:");
-        service.display(bogies);
+        String searchKey = "BG309";
 
-        service.sortBogieNames(bogies);
+        System.out.println("Searching for: " + searchKey);
 
-        System.out.println("After Sorting:");
-        service.display(bogies);
+        boolean found = service.searchBogie(bogies, searchKey);
+
+        if (found) {
+            System.out.println("Bogie Found!");
+        } else {
+            System.out.println("Bogie Not Found!");
+        }
 
         System.out.println("\n--- Running Test Cases ---");
 
-        testSort_BasicAlphabeticalSorting();
-        testSort_UnsortedInput();
-        testSort_AlreadySortedArray();
-        testSort_DuplicateBogieNames();
-        testSort_SingleElementArray();
+        testSearch_BogieFound();
+        testSearch_BogieNotFound();
+        testSearch_FirstElementMatch();
+        testSearch_LastElementMatch();
+        testSearch_SingleElementArray();
     }
 }
