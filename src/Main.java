@@ -1,99 +1,102 @@
-// Custom Runtime Exception
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
+public class Main {
 
-// Enum for Bogie Shape
-enum BogieShape {
-    RECTANGULAR,
-    CYLINDRICAL
-}
+    // Bubble Sort Service
+    static class PassengerService {
 
-// Enum for Cargo Type
-enum CargoType {
-    COAL,
-    GRAINS,
-    PETROLEUM
-}
+        // Bubble Sort Method
+        public void sortCapacities(int[] arr) {
+            int n = arr.length;
 
-// GoodsBogie Class
-class GoodsBogie {
-    private String bogieId;
-    private BogieShape shape;
-    private CargoType cargo;
+            for (int i = 0; i < n - 1; i++) {
+                for (int j = 0; j < n - i - 1; j++) {
 
-    public GoodsBogie(String bogieId, BogieShape shape) {
-        this.bogieId = bogieId;
-        this.shape = shape;
-    }
-
-    public String getBogieId() {
-        return bogieId;
-    }
-
-    public BogieShape getShape() {
-        return shape;
-    }
-
-    public CargoType getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(CargoType cargo) {
-        this.cargo = cargo;
-    }
-}
-
-// Service Class
-class CargoService {
-
-    public void assignCargo(GoodsBogie bogie, CargoType cargo) {
-
-        try {
-            System.out.println("Assigning " + cargo + " to Bogie: " + bogie.getBogieId());
-
-            // Unsafe condition
-            if (bogie.getShape() == BogieShape.RECTANGULAR &&
-                    cargo == CargoType.PETROLEUM) {
-
-                throw new CargoSafetyException(
-                        "Unsafe Assignment: Petroleum cannot be loaded in RECTANGULAR bogie!"
-                );
+                    if (arr[j] > arr[j + 1]) {
+                        // Swap
+                        int temp = arr[j];
+                        arr[j] = arr[j + 1];
+                        arr[j + 1] = temp;
+                    }
+                }
             }
+        }
 
-            // Safe assignment
-            bogie.setCargo(cargo);
-            System.out.println("Cargo assigned successfully.");
-
-        } catch (CargoSafetyException e) {
-            System.out.println("ERROR: " + e.getMessage());
-
-        } finally {
-            System.out.println("Validation completed for Bogie: " + bogie.getBogieId());
+        // Display Method
+        public void display(int[] arr) {
+            for (int i : arr) {
+                System.out.print(i + " ");
+            }
+            System.out.println();
         }
     }
-}
 
-// Main Class
-public class Main {
+    // ---------- TEST METHODS ----------
+
+    static void testSort_BasicSorting() {
+        int[] arr = {72, 56, 24, 70, 60};
+        PassengerService service = new PassengerService();
+        service.sortCapacities(arr);
+
+        System.out.print("Basic Sorting: ");
+        service.display(arr); // Expected: 24 56 60 70 72
+    }
+
+    static void testSort_AlreadySortedArray() {
+        int[] arr = {24, 56, 60, 70, 72};
+        PassengerService service = new PassengerService();
+        service.sortCapacities(arr);
+
+        System.out.print("Already Sorted: ");
+        service.display(arr);
+    }
+
+    static void testSort_DuplicateValues() {
+        int[] arr = {72, 56, 56, 24};
+        PassengerService service = new PassengerService();
+        service.sortCapacities(arr);
+
+        System.out.print("Duplicate Values: ");
+        service.display(arr);
+    }
+
+    static void testSort_SingleElementArray() {
+        int[] arr = {50};
+        PassengerService service = new PassengerService();
+        service.sortCapacities(arr);
+
+        System.out.print("Single Element: ");
+        service.display(arr);
+    }
+
+    static void testSort_AllEqualValues() {
+        int[] arr = {40, 40, 40};
+        PassengerService service = new PassengerService();
+        service.sortCapacities(arr);
+
+        System.out.print("All Equal Values: ");
+        service.display(arr);
+    }
+
+    // ---------- MAIN METHOD ----------
     public static void main(String[] args) {
 
-        CargoService service = new CargoService();
+        PassengerService service = new PassengerService();
 
-        GoodsBogie bogie1 = new GoodsBogie("B1", BogieShape.CYLINDRICAL);
-        GoodsBogie bogie2 = new GoodsBogie("B2", BogieShape.RECTANGULAR);
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        // Safe assignment
-        service.assignCargo(bogie1, CargoType.PETROLEUM);
+        System.out.println("Before Sorting:");
+        service.display(capacities);
 
-        // Unsafe assignment (handled)
-        service.assignCargo(bogie2, CargoType.PETROLEUM);
+        service.sortCapacities(capacities);
 
-        // Program continues after exception
-        service.assignCargo(bogie2, CargoType.COAL);
+        System.out.println("After Sorting:");
+        service.display(capacities);
 
-        System.out.println("Program continues without crashing...");
+        System.out.println("\n--- Running Test Cases ---");
+
+        testSort_BasicSorting();
+        testSort_AlreadySortedArray();
+        testSort_DuplicateValues();
+        testSort_SingleElementArray();
+        testSort_AllEqualValues();
     }
 }
